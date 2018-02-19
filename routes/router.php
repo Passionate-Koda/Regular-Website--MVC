@@ -32,6 +32,11 @@ if(isset($_GET['err'])){
   $err = $_GET['err'];
 }
 
+$wn = NULL;
+if(isset($_GET['wn'])){
+  $wn = $_GET['wn'];
+}
+
 
 
 
@@ -74,6 +79,10 @@ include APP_PATH."/views/admin/admin_home.php";
 
   case "adminRegistration?success=$success":
   include APP_PATH."/views/admin/add_admin.php";
+  break;
+
+  case "adminLogin?wn=$wn":
+  include APP_PATH."/views/admin/admin_login.php";
   break;
 
   case "adminLogin?err=$err":

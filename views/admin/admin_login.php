@@ -77,6 +77,38 @@ if(array_key_exists('submit', $_POST)){
 <section id="content">
 <div class="container">
 <div class="row">
+
+<?php
+if (isset($_GET['err'])){
+$msg = str_replace('_', ' ', $_GET['err']);
+
+  echo '<div class="col-md-12">
+<div class="inner-box posting">
+<div class="alert alert-danger alert-lg" role="alert">
+<h2 class="postin-title">x Ops! '.$msg.' </h2>
+<p>Please use correct password</p>
+</div>
+</div>
+</div>';
+}
+if (isset($_GET['wn'])){
+$msg = str_replace('_', ' ', $_GET['wn']);
+
+  echo '<div class="col-md-12">
+<div class="inner-box posting">
+<div class="alert alert-warning alert-lg" role="alert">
+<h2 class="postin-title">Warning! '.$msg.' </h2>
+<p>McKodev will verify your account once you are confirmed as a McKodev Admin. You will be Notified via mail. Thanks</p>
+</div>
+</div>
+</div>';
+}
+
+
+
+ ?>
+
+
 <div class="col-sm-6 col-sm-offset-4 col-md-4 col-md-offset-4">
 <div class="page-login-form box">
 <h3>
@@ -86,13 +118,13 @@ Login
 <div class="form-group">
 <div class="input-icon">
 <i class="icon fa fa-user"></i>
-<input type="text" id="sender-email" class="form-control" name="email" placeholder="EMAILSS">
+<input type="text" id="sender-email" class="form-control" name="email" placeholder="Email">
 </div>
 </div>
 <div class="form-group">
 <div class="input-icon">
 <i class="icon fa fa-unlock-alt"></i>
-<input type="pword" class="form-control" placeholder="Password">
+<input type="password" name="pword" class="form-control" placeholder="Password">
 </div>
 </div>
 <div class="checkbox">

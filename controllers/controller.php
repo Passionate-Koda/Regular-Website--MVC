@@ -62,34 +62,33 @@ $suc = 'Registration Successful';
 
    $stmt ->bindParam(":e", $input['email']);
    $stmt->execute();
-
    $row = $stmt->fetch(PDO::FETCH_BOTH);
-
-   if($row->rowCount() !=1 || !password_verify($input['pword'], $row['hash'])){
+   if($stmt->rowCount() !=1 || !password_verify($input['pword'], $row['hash'])){
      $suc = 'Invalid Email or Password';
       $message = preg_replace('/\s+/', '_', $suc);
       header("Location:adminLogin?err=$message");
    }else{
+     $verification = 1;
      $statement = $dbconn->prepare("SELECT * FROM admin WHERE email = :e AND verification=:ver ");
      $statement ->bindParam(":e", $input['email']);
-     $statement ->bindParam(":ver",1);
+     $statement ->bindParam(":ver", $verification);
      $statement->execute();
-     var_dump($)
 
-     $row = $stmt->fetch(PDO::FETCH_BOTH);
-
-     if($stmt->rowCount() !=1){
-       $suc = 'You Have Not been Verified as Mckodev Admin';
+     if($statement->rowCount() !=1){
+       $state = $dbconn->prepare("SELECT * FROM admin WHERE email = :e ");
+       $state ->bindParam(":e", $input['email']);
+        $state->execute();
+       $row = $state->fetch(PDO::FETCH_BOTH);
+       extract($row);
+       $suc = 'Dear '.ucwords($firstname).', You Have Not been Verified as Mckodev Admin';
         $message = preg_replace('/\s+/', '_', $suc);
-        header("Location:adminRegistration?wn=$message");
+        header("Location:adminLogin?wn=$message");
      }else{
        extract($row);
        $_SESSION['id'] = $hash_id;
-       header("Location: /adminHome");
+       header("Location:admin");
      }
-
    }
-
  }
 
 
