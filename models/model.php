@@ -1,7 +1,7 @@
 <?php
     define("DBNAME", 'mckodev');
     define("DBUSER", 'root');
-    define("DBPASS", 'koda');
+    define("DBPASS", 'dre');
 
         try{
 
