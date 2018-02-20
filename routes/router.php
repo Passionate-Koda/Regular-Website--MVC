@@ -37,6 +37,11 @@ if(isset($_GET['wn'])){
   $wn = $_GET['wn'];
 }
 
+$sgn = NULL;
+if(isset($_GET['sgn'])){
+  $sgn = $_GET['sgn'];
+}
+
 
 
 
@@ -69,6 +74,10 @@ include APP_PATH."/views/admin/admin_home.php";
   include APP_PATH."/views/admin/add_profile.php";
   break;
 
+  case "addProfile?success=$success":
+  include APP_PATH."/views/admin/add_profile.php";
+  break;
+
   case "addProject":
   include APP_PATH."/views/admin/add_project.php";
   break;
@@ -85,6 +94,10 @@ include APP_PATH."/views/admin/admin_home.php";
   include APP_PATH."/views/admin/admin_login.php";
   break;
 
+  case "adminLogin?sgn=$sgn":
+  include APP_PATH."/views/admin/admin_login.php";
+  break;
+
   case "adminLogin?err=$err":
   include APP_PATH."/views/admin/admin_login.php";
   break;
@@ -98,6 +111,10 @@ include APP_PATH."/views/admin/admin_home.php";
   break;
 
   case "manageViews":
+  include APP_PATH."/views/admin/manage_views.php";
+  break;
+
+  case "manageViews?success=$success":
   include APP_PATH."/views/admin/manage_views.php";
   break;
 

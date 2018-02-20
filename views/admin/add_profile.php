@@ -2,10 +2,60 @@
 
 <?php
 include("include/link_include.php");
+include("include/authentication.php");
+authenticate();
+if(isset($_SESSION['id'])){
+  $session = $_SESSION['id'];
+}
+$info = adminInfo($conn,$session);
+extract($info);
+
+
+
+$error = [];
+if(array_key_exists('submit', $_POST)){
+  $ext = ["image/jpg", "image/JPG", "image/jpeg", "image/JPEG", "image/png", "image/PNG"];
+  if(empty($_FILES['upload']['name'])){
+    $error['upload'] = "Please choose file";
+  }
+  if(empty($_FILES['upload1']['name'])){
+    $error['upload1'] = "Please choose file";
+  }
+  if(empty($_FILES['upload2']['name'])){
+    $error['upload2'] = "Please choose file";
+  }
+  if(empty($_POST['header_title'])){
+    $error['header_title'] = "Enter Header Title";
+  }
+  if(empty($_POST['txt'])){
+    $error['txt'] = "Enter Text";
+}
+  if(empty($error)){
+    $ver = compressImage($_FILES,'upload',50, 'uploads/' );
+    $clean =  array_map('trim',$_POST );
+    addFrontage($conn, $clean, $ver,$hash_id);
+  }
+}
+
+
+
  ?>
 <section id="content">
 <div class="container">
 <div class="row">
+
+<?php if (isset($_GET['success'])){
+$msg = str_replace('_', ' ', $_GET['success']);
+
+  echo '<div class="col-md-12">
+<div class="inner-box posting">
+<div class="alert alert-success alert-lg" role="alert">
+<h2 class="postin-title">✔ Successful! '.$msg.' </h2>
+<p>Thank you '.ucwords($firstname).', McKodev is happy to have you around. </p>
+</div>
+</div>
+</div>';
+} ?>
 <div class="col-sm-12 col-md-10 col-md-offset-1">
 <div class="page-ads box">
 <h2 class="title-2">Welcome to the profile page</h2>

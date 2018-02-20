@@ -19,7 +19,7 @@ if(array_key_exists('submit', $_POST)){
   }
 
   if(doesEmailExist($conn,$_POST['email'])){
-    $error['email'] = "*Email already exists on our system, Please E\nter another email";
+    $error['email'] = "*Email already exists on our system, Please enter another email";
   }
 
   if(empty($_POST['pword'])){
@@ -35,7 +35,7 @@ if(array_key_exists('submit', $_POST)){
 
   if(empty($error)){
     $clean = array_map('trim', $_POST);
-    doAdminRegister($conn, $clean);
+    adminLogin($conn, $clean);
   }
 }
 

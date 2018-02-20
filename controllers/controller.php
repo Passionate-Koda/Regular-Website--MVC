@@ -93,6 +93,55 @@ $suc = 'Registration Successful';
 
 
 
+ function compressImage($files, $name, $quality, $upDIR ) {
+
+   $rnd = rand(0000000, 9999999);
+   $strip_name = str_replace(" ", "_", $_FILES[$name]['name']);
+
+   $filename = $rnd.$strip_name;
+   $destination_url = $upDIR.$filename;
+
+   $info = getimagesize($files[$name]['tmp_name']);
+
+         if ($info['mime'] == 'image/jpeg')
+               $image = imagecreatefromjpeg($files[$name]['tmp_name']);
+
+         elseif ($info['mime'] == 'image/gif')
+               $image = imagecreatefromgif($files[$name]['tmp_name']);
+
+       elseif ($info['mime'] == 'image/png')
+               $image = imagecreatefrompng($files[$name]['tmp_name']);
+
+         imagejpeg($image, $destination_url, $quality);
+
+   return $destination_url;
+ }
+
+
+ function addFrontage($dbconn,$post,$destination,$sess){
+   $stmt = $dbconn->prepare("INSERT INTO frontage VALUES(NULL, :ht,:txt,:img,NOW(),NOW(),:sess)");
+   $data = [
+     ':ht' => $post['header_title'],
+     ':txt' => $post['txt'],
+     ':img' => $destination,
+     ':sess' => $sess
+   ];
+   $stmt->execute($data);
+   $success = "Frontage Info Added";
+   $succ = preg_replace('/\s+/', '_', $success);
+
+   header("Location:/manageViews?success=$succ");
+ }
+
+ function adminInfo($dbconn,$sess){
+   $stmt = $dbconn->prepare("SELECT hash_id,firstname,lastname FROM admin WHERE hash_id = :sid");
+   $data = [
+     ':sid' => $sess
+   ];
+   $stmt->execute($data);
+   $row = $stmt->fetch(PDO::FETCH_BOTH);
+   return $row;
+ }
 
 
 

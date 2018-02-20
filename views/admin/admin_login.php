@@ -103,6 +103,18 @@ $msg = str_replace('_', ' ', $_GET['wn']);
 </div>
 </div>';
 }
+if (isset($_GET['sgn'])){
+$msg = str_replace('_', ' ', $_GET['sgn']);
+
+  echo '<div class="col-md-12">
+<div class="inner-box posting">
+<div class="alert alert-warning alert-lg" role="alert">
+<h2 class="postin-title">Warning! '.$msg.' </h2>
+<p>McKodev admin pages cannot be accessed without signin. Thanks</p>
+</div>
+</div>
+</div>';
+}
 
 
 

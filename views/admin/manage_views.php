@@ -1,38 +1,95 @@
-
-
 <?php
+ob_start();
+session_start();
 include("include/link_include.php");
- ?>
+include("include/authentication.php");
+authenticate();
+if(isset($_SESSION['id'])){
+  $session = $_SESSION['id'];
+}
+$info = adminInfo($conn,$session);
+extract($info);
+
+
+$error = [];
+if(array_key_exists('submit', $_POST)){
+  $ext = ["image/jpg", "image/JPG", "image/jpeg", "image/JPEG", "image/png", "image/PNG"];
+  if(empty($_FILES['upload']['name'])){
+    $error['upload'] = "Please choose file";
+  }
+  if(empty($_POST['header_title'])){
+    $error['header_title'] = "Enter Header Title";
+  }
+  if(empty($_POST['txt'])){
+    $error['txt'] = "Enter Text";
+}
+  if(empty($error)){
+    $ver = compressImage($_FILES,'upload',50, 'uploads/' );
+    $clean =  array_map('trim',$_POST );
+    addFrontage($conn, $clean, $ver,$hash_id);
+  }
+}
+
+
+?>
+
+
+
+
+
+
+
 <section id="content">
 <div class="container">
 <div class="row">
+<?php
+
+if (isset($_GET['success'])){
+$msg = str_replace('_', ' ', $_GET['success']);
+
+  echo '<div class="col-md-12">
+<div class="inner-box posting">
+<div class="alert alert-success alert-lg" role="alert">
+<h2 class="postin-title">✔ Successful! '.$msg.' </h2>
+<p>Thank you '.ucwords($firstname).', McKodev is happy to have you around. </p>
+</div>
+</div>
+</div>';
+}
+
+ ?>
 <div class="col-sm-12 col-md-10 col-md-offset-1">
 <div class="page-ads box">
 <h2 class="title-2">Welcome to the Manage views Page</h2>
 <div class="row search-bar mb30 ">
 <div class="advanced-search">
-<form class="search-form" method="get">
+
 <div class="col-md-4 col-sm-12 search-col">
 <h3>Manage Views</h3>
 </div>
-</form>
-</div>
-</div>
-<form class="form-ad">
-<div class="form-group mb30">
-<label class="control-label">Header Name</label> <input class="form-control input-md" name="Adtitle" placeholder="Enter name of the header" required type="text">
-</div>
-<div class="form-group mb30">
-<label class="control-label">Text</label> <input class="form-control input-md" name="Adtitle" placeholder="Enter your text here" required type="text">
 
-
+</div>
+</div>
+<form class="form-ad" method="POST" action="" enctype="multipart/form-data">
+  <?php $display = displayErrors($error, 'header_title');
+  echo $display ?>
+<div class="form-group mb30">
+<label class="control-label">Header Name</label> <input class="form-control input-md" name="header_title" placeholder="Enter name of the header"  type="text">
+</div>
+<?php $display = displayErrors($error, 'txt');
+echo $display ?>
+<div class="form-group mb30">
+<label class="control-label">Text</label> <input class="form-control input-md" name="txt" placeholder="Enter your text here"  type="text">
 
 <h2 class="title-2">Add Images to Public</h2>
+<?php $display = displayErrors($error, 'upload');
+echo $display ?>
 <div class="form-group">
-<label class="control-label">Featured Image</label> <input class="file" id="featured-img" type="file"><br>
+<label class="control-label">Featured Image</label> <input class="file" name="upload"  type="file"><br>
 </div>
 <p class="help-block">Add image.</p>
-<button class="btn btn-common" type="button">Submit</button>
+<input type="submit" class="btn btn-common"  name="submit" value="submit">
+
 </form>
 
 </div>
