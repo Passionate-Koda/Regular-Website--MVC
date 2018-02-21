@@ -133,19 +133,50 @@ $suc = 'Registration Successful';
    header("Location:/manageViews?success=$succ");
  }
 
- function addBlog($dbconn,$post,$destination,$sess){
-   $stmt = $dbconn->prepare("INSERT INTO frontage VALUES(NULL, :ht,:txt,:img,NOW(),NOW(),:sess)");
+ function addBlog($dbconn,$post,$destn, $sess){
+   $rnd = rand(0000000000,9999999999);
+   $split = explode(" ",$post['title']);
+   $id = $rnd.$split['0'];
+   $hash_id = 'blog'.str_shuffle($id);
+   $stmt = $dbconn->prepare("INSERT INTO blog VALUES(NULL, :tt,:au,:vis,:bd,:img1,:img2,:sess,NOW(),NOW(),:hsh)");
    $data = [
-     ':ht' => $post['header_title'],
-     ':txt' => $post['txt'],
-     ':img' => $destination,
-     ':sess' => $sess
+     ':tt' => $post['title'],
+     ':au' => $post['author'],
+     ':vis' => $post['visibility'],
+     ':bd' => $post['body'],
+     ':img1' => $destn['a'],
+     ':img2' => $destn['b'],
+     ':sess' => $sess,
+     ':hsh' => $hash_id
    ];
    $stmt->execute($data);
-   $success = "Frontage Info Added";
+   $success = "Blog Post Uploaded";
    $succ = preg_replace('/\s+/', '_', $success);
 
-   header("Location:/manageViews?success=$succ");
+   header("Location:/addBlog?success=$succ");
+ }
+
+ function addProject($dbconn,$post,$destn, $sess){
+   $rnd = rand(0000000000,9999999999);
+   $split = explode(" ",$post['title']);
+   $id = $rnd.$split['0'];
+   $hash_id = 'blog'.str_shuffle($id);
+   $stmt = $dbconn->prepare("INSERT INTO blog VALUES(NULL, :tt,:au,:vis,:bd,:img1,:img2,:sess,NOW(),NOW(),:hsh)");
+   $data = [
+     ':tt' => $post['title'],
+     ':au' => $post['author'],
+     ':vis' => $post['visibility'],
+     ':bd' => $post['body'],
+     ':img1' => $destn['a'],
+     ':img2' => $destn['b'],
+     ':sess' => $sess,
+     ':hsh' => $hash_id
+   ];
+   $stmt->execute($data);
+   $success = "Blog Post Uploaded";
+   $succ = preg_replace('/\s+/', '_', $success);
+
+   header("Location:/addBlog?success=$succ");
  }
 
  function addProfile($dbconn,$post,$destn,$sess){

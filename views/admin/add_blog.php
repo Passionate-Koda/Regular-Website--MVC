@@ -1,10 +1,73 @@
-
 <?php
+ob_start();
+session_start();
 include("include/link_include.php");
+include("include/authentication.php");
+authenticate();
+if(isset($_SESSION['id'])){
+  $session = $_SESSION['id'];
+}
+$info = adminInfo($conn,$session);
+extract($info);
+$fname = ucwords($firstname);
+$lname = ucwords($lastname);
+
+
+
+
+
+
+
+$error= [];
+
+if(array_key_exists('submit', $_POST)){
+  $ext = ["image/jpg", "image/JPG", "image/jpeg", "image/JPEG", "image/png", "image/PNG"];
+  if(empty($_FILES['upload']['name'])){
+    $error['upload'] = "Please choose file";
+  }
+  if(empty($_FILES['uploada']['name'])){
+    $error['uploada'] = "Please choose file";
+  }
+
+  if(empty($_POST['title'])){
+    $error['title']="Enter a Title";
+  }
+
+  if(empty($_POST['author'])){
+    $error['author']="Enter a Author";
+  }
+
+  if(empty($_POST['body'])){
+    $error['body']="Enter a body";
+  }
+  if(empty($_POST['visibility'])){
+    $error['visibility']="Enter a Visibility";
+  }
+
+  if(empty($error)){
+    $ver['a'] = compressImage($_FILES,'upload',50, 'uploads/' );
+    $ver['b'] = compressImage($_FILES,'uploada',50, 'uploads/' );
+
+    $clean = array_map('trim', $_POST);
+    addBlog($conn, $clean,$ver,$hash_id);
+  }
+}
  ?>
 <section id="content">
 <div class="container">
 <div class="row">
+  <?php if (isset($_GET['success'])){
+  $msg = str_replace('_', ' ', $_GET['success']);
+
+    echo '<div class="col-md-12">
+  <div class="inner-box posting">
+  <div class="alert alert-success alert-lg" role="alert">
+  <h2 class="postin-title">✔ Successful! '.$msg.' </h2>
+  <p>Thank you '.ucwords($firstname).', McKodev is happy to have you around. </p>
+  </div>
+  </div>
+  </div>';
+  } ?>
 <div class="col-sm-12 col-md-10 col-md-offset-1">
 <div class="page-ads box">
 <h2 class="title-2">Welcome to the blog page</h2>
@@ -17,57 +80,67 @@ include("include/link_include.php");
 </form>
 </div>
 </div>
-<form class="form-ad">
+<form class="form-ad" action="" method="post" enctype="multipart/form-data">
 <div class="form-group mb30">
-<label class="control-label">Article Title</label> <input class="form-control input-md" name="Adtitle" placeholder="Write a suitable title for your article" required type="text"> <span class="help-block">A great title needs at least 60 characters.</span>
+<label class="control-label">Article Title</label><?php $display = displayErrors($error, 'title');
+echo $display ?> <input class="form-control input-md" name="title" placeholder="Write a suitable title for your article"  type="text">
 </div>
 <div class="form-group mb30">
-<label class="control-label">Author Name</label> <input class="form-control input-md" name="Adtitle" placeholder="Enter your fullname here" required type="text"> <span class="help-block">A great title needs at least 60 characters.</span>
-</div>
+<label class="control-label">Author Name</label><?php $display = displayErrors($error, 'author');
+echo $display ?> <input class="form-control input-md" name="author" placeholder="Enter your fullname here"  type="text">
 
 <div class="form-group mb30">
 <label class="control-label" for="textarea">Body</label>
-<textarea class="form-control" id="textarea" name="textarea" placeholder="Write your article here" rows="4"></textarea>
+<?php $display = displayErrors($error, 'body');
+echo $display ?>
+<textarea class="form-control" id="textarea" name="body" placeholder="Write your article here" rows="4"></textarea>
+</div>
 
-<div class="col-md-4 col-sm-4 col-xs-12 search-bar search-bar-nostyle">
-<form class="search-form" method="get">
-<div class="input-group-addon search-category-container">
   <br/>
-<label class="styled-select default-select"> <select class="dropdown-product selectpicker" name="product-cat">
-<option value="New York">
-VISIBILITY
+<div class="form-group mb30">
+
+<label class="styled-select default-select">VISIBILITY </label>  <?php $display = displayErrors($error, 'visibility');
+  echo $display ?><br><select class="dropdown-product selectpicker" name="visibility">
+<option value="">
+--Select--
 </option>
-<option value="California">
+<option value="show">
 Show
 </option>
-<option value="California">
+<option value="hide">
 Hide
 </option>
-<option value="California">
+<option value="show_preview">
 Preview
 </option>
-</select></label>
-</div>
-</form>
-</div>
+</select>
 </div>
 <br/>
 <br/>
+
 <h2 class="title-2">Add Images here</h2>
 <div class="form-group">
-<label class="control-label">Featured Image</label> <input class="file" id="featured-img" type="file"><br>
+<label class="control-label">Add 2 images</label>
+<?php $display = displayErrors($error, 'upload');
+  echo $display ?> <br>
+ <input class="file" id="featured-img" type="file" name="upload"><br>
 <br>
- <input class="file" data-show-preview="featured-image" id="gallery-img-a" type="file"><br>
+<?php $display = displayErrors($error, 'visibility');
+  echo $display ?> <br>
+ <input class="file" data-show-preview="featured-image" id="gallery-img-a" type="file" name="uploada"><br>
 </div>
-<p class="help-block">Add 2 images.</p>
-<button class="btn btn-common" type="button">Submit</button>
+<input type="submit" class="btn btn-common" name="submit" value="Add">
 </form>
+</div>
+</div>
+
+
+
+
 
 </div>
 </div>
-</div>
-</div>
-</div>
+
 </section>
 
 <a class="back-to-top" href="#"><i class="fa fa-angle-up"></i></a>

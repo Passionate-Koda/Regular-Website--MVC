@@ -62,6 +62,10 @@ include APP_PATH."/views/admin/admin_home.php";
   include APP_PATH."/views/admin/add_blog.php";
   break;
 
+  case "addBlog?success=$success":
+  include APP_PATH."/views/admin/add_blog.php";
+  break;
+
   case "addFaq":
   include APP_PATH."/views/admin/add_faq.php";
   break;
