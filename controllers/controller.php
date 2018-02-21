@@ -157,26 +157,21 @@ $suc = 'Registration Successful';
  }
 
  function addProject($dbconn,$post,$destn, $sess){
-   $rnd = rand(0000000000,9999999999);
-   $split = explode(" ",$post['title']);
-   $id = $rnd.$split['0'];
-   $hash_id = 'blog'.str_shuffle($id);
-   $stmt = $dbconn->prepare("INSERT INTO blog VALUES(NULL, :tt,:au,:vis,:bd,:img1,:img2,:sess,NOW(),NOW(),:hsh)");
+
+
+   $stmt = $dbconn->prepare("INSERT INTO project VALUES(NULL, :nm,:lk,:ab,:img,NOW(),NOW(),:sess)");
    $data = [
-     ':tt' => $post['title'],
-     ':au' => $post['author'],
-     ':vis' => $post['visibility'],
-     ':bd' => $post['body'],
-     ':img1' => $destn['a'],
-     ':img2' => $destn['b'],
+     ':nm' => $post['name'],
+     ':lk' => $post['link'],
+     ':ab' => $post['about'],
+     ':img' => $destn['a'],
      ':sess' => $sess,
-     ':hsh' => $hash_id
    ];
    $stmt->execute($data);
-   $success = "Blog Post Uploaded";
+   $success = "Project Uploaded";
    $succ = preg_replace('/\s+/', '_', $success);
 
-   header("Location:/addBlog?success=$succ");
+   header("Location:/addProject?success=$succ");
  }
 
  function addProfile($dbconn,$post,$destn,$sess){

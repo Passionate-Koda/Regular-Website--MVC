@@ -1,11 +1,59 @@
-
-
 <?php
+ob_start();
+session_start();
 include("include/link_include.php");
+include("include/authentication.php");
+authenticate();
+if(isset($_SESSION['id'])){
+  $session = $_SESSION['id'];
+}
+$info = adminInfo($conn,$session);
+extract($info);
+$fname = ucwords($firstname);
+$lname = ucwords($lastname);
+
+$error= [];
+
+if(array_key_exists('submit', $_POST)){
+  $ext = ["image/jpg", "image/JPG", "image/jpeg", "image/JPEG", "image/png", "image/PNG"];
+  if(empty($_FILES['upload']['name'])){
+    $error['upload'] = "Please choose file";
+  }
+
+  if(empty($_POST['name'])){
+    $error['name']="Enter a Name";
+  }
+
+  if(empty($_POST['link'])){
+    $error['link']="Enter a Link";
+  }
+
+  if(empty($_POST['about'])){
+    $error['about']="Enter a About";
+  }
+  if(empty($error)){
+    $ver['a'] = compressImage($_FILES,'upload',50, 'uploads/' );
+    $clean = array_map('trim', $_POST);
+    addProject($conn, $clean,$ver,$hash_id);
+  }
+}
  ?>
+
 <section id="content">
 <div class="container">
 <div class="row">
+  <?php if (isset($_GET['success'])){
+  $msg = str_replace('_', ' ', $_GET['success']);
+
+    echo '<div class="col-md-12">
+  <div class="inner-box posting">
+  <div class="alert alert-success alert-lg" role="alert">
+  <h2 class="postin-title">✔ Successful! '.$msg.' </h2>
+  <p>Thank you '.ucwords($firstname).', McKodev is happy to have you around. </p>
+  </div>
+  </div>
+  </div>';
+  } ?>
 <div class="col-sm-12 col-md-10 col-md-offset-1">
 <div class="page-ads box">
 <h2 class="title-2">Welcome to the Project Page</h2>
@@ -18,25 +66,29 @@ include("include/link_include.php");
 </form>
 </div>
 </div>
-<form class="form-ad">
+<form class="form-ad" method="post" action="" enctype="multipart/form-data">
 <div class="form-group mb30">
-<label class="control-label">Project Name</label> <input class="form-control input-md" name="Adtitle" placeholder="Enter name of the project" required type="text">
+<label class="control-label">Project Name</label><?php $display = displayErrors($error, 'name');
+echo $display ?> <input class="form-control input-md" name="name" placeholder="Enter name of the project"  type="text">
 </div>
 <div class="form-group mb30">
-<label class="control-label">Link</label> <input class="form-control input-md" name="Adtitle" placeholder="Enter Project link" required type="text">
+<label class="control-label">Link</label><?php $display = displayErrors($error, 'link');
+echo $display ?> <input class="form-control input-md" name="link" placeholder="Enter Project link"  type="text">
 </div>
 
 <div class="form-group mb30">
 <label class="control-label" for="textarea">ABOUT</label>
-<textarea class="form-control" id="textarea" name="textarea" placeholder="Write your article here" rows="4"></textarea>
+<?php $display = displayErrors($error, 'about');
+echo $display ?>
+<textarea class="form-control" id="textarea" name="about" placeholder="Write your article here" rows="4"></textarea>
 
 <h2 class="title-2">Add Project Image</h2>
 <div class="form-group">
-<input class="file" id="featured-img" type="file"><br>
+  <?php $display = displayErrors($error, 'about');
+  echo $display ?>
+<input class="file" id="featured-img" type="file" name="upload"><br>
 </div>
-<p class="help-block">Add photo.</p>
-<button class="btn btn-common" type="button">Submit Project</button>
-</form>
+<input type="submit" class="btn btn-common" name="submit" value="Submit">
 
 </div>
 </div>
