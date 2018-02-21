@@ -1,6 +1,6 @@
-
-
 <?php
+ob_start();
+session_start();
 include("include/link_include.php");
 include("include/authentication.php");
 authenticate();
@@ -9,31 +9,64 @@ if(isset($_SESSION['id'])){
 }
 $info = adminInfo($conn,$session);
 extract($info);
+$fname = ucwords($firstname);
+$lname = ucwords($lastname);
+
+
+
+
 
 
 
 $error = [];
 if(array_key_exists('submit', $_POST)){
+
   $ext = ["image/jpg", "image/JPG", "image/jpeg", "image/JPEG", "image/png", "image/PNG"];
   if(empty($_FILES['upload']['name'])){
     $error['upload'] = "Please choose file";
   }
-  if(empty($_FILES['upload1']['name'])){
-    $error['upload1'] = "Please choose file";
+  if(empty($_FILES['uploada']['name'])){
+    $error['uploada'] = "Please choose file";
   }
-  if(empty($_FILES['upload2']['name'])){
-    $error['upload2'] = "Please choose file";
+  if(empty($_FILES['uploadb']['name'])){
+    $error['uploadb'] = "Please choose file";
   }
-  if(empty($_POST['header_title'])){
-    $error['header_title'] = "Enter Header Title";
+  if(empty($_POST['lname'])){
+    $error['lname'] = "Enter  LastName";
   }
-  if(empty($_POST['txt'])){
-    $error['txt'] = "Enter Text";
-}
+  if(empty($_POST['fname'])){
+    $error['fname'] = "Enter FirstName";
+  }
+  if(empty($_POST['portfolio'])){
+    $error['portfolio'] = "Enter Portfolio";
+  }
+  if(empty($_POST['bio'])){
+    $error['bio'] = "Enter Bio";
+  }
+  if(empty($_POST['phonenumber'])){
+    $error['phonenumber'] = "Enter PhoneNumber";
+  }
+  if(empty($_POST['fblink'])){
+    $error['fblink'] = "Enter Facebook Link";
+  }
+  if(empty($_POST['twlink'])){
+    $error['twlink'] = "Enter Twitter Link";
+  }
+  if(empty($_POST['location'])){
+    $error['location'] = "Enter Location";
+  }
+  if(empty($_POST['iglink'])){
+    $error['iglink'] = "Enter Instagram Link";
+  }
+  if(empty($_POST['lklink'])){
+    $error['lklink'] = "Enter LinkedIn Link";
+  }
   if(empty($error)){
-    $ver = compressImage($_FILES,'upload',50, 'uploads/' );
-    $clean =  array_map('trim',$_POST );
-    addFrontage($conn, $clean, $ver,$hash_id);
+    $ver['a'] = compressImage($_FILES,'upload',50, 'uploads/' );
+    $ver['b'] = compressImage($_FILES,'uploada',50, 'uploads/' );
+    $ver['c'] = compressImage($_FILES,'uploadb',50, 'uploads/' );
+    $clean = array_map('trim',$_POST);
+    addProfile($conn, $clean, $ver,$hash_id);
   }
 }
 
@@ -56,6 +89,9 @@ $msg = str_replace('_', ' ', $_GET['success']);
 </div>
 </div>';
 } ?>
+
+
+<?php if($profile_status == NULL){?>
 <div class="col-sm-12 col-md-10 col-md-offset-1">
 <div class="page-ads box">
 <h2 class="title-2">Welcome to the profile page</h2>
@@ -66,54 +102,101 @@ $msg = str_replace('_', ' ', $_GET['success']);
 </form>
 </div>
 </div>
-<form class="form-ad">
+<form class="form-ad" action="" method="POST" enctype="multipart/form-data">
 
 <div class="form-group mb30">
-<label class="control-label">FULLNAME</label> <input class="form-control input-md" name="Adtitle"  type="text" placeholder="Enter your fullname"/>
+
+<label class="control-label">FIRSTNAME</label>
+<?php $display = displayErrors($error, 'fname');
+echo $display ?>
+ <input class="form-control input-md" name="fname"  type="text" value="<?php echo "$fname"  ?>" placeholder="Enter your firstname"/>
+
+<div class="form-group mb30">
+
+<label class="control-label">LASTNAME</label>
+<?php $display = displayErrors($error, 'lname');
+echo $display ?> <input class="form-control input-md" name="lname"  type="text" value="<?php echo "$lname"  ?>" placeholder="Enter your lastname"/>
 </div>
 <div class="form-group mb30">
+
 <label class="control-label" for="textarea">PORTFOLIO</label>
-<textarea class="form-control" id="textarea" name="textarea" placeholder="Enter Your Portfolio" rows="4"></textarea>
+<?php $display = displayErrors($error, 'portfolio');
+echo $display ?>
+<textarea class="form-control" id="textarea" name="portfolio" placeholder="Enter Your Portfolio" rows="4"></textarea>
 </div>
+
 <div class="form-group mb30">
 <label class="control-label" for="textarea">BIO</label>
-<textarea class="form-control" id="textarea" name="textarea" placeholder="Enter your bio" rows="4"></textarea>
+<?php $display = displayErrors($error, 'bio');
+echo $display ?>
+<textarea class="form-control" id="textarea" name="bio" placeholder="Enter your bio" rows="4"></textarea>
 </div>
+
 <div class="form-group mb30">
-<label class="control-label">PHONE NUMBER</label> <input class="form-control input-md" name="Adtitle"  type="text"placeholder="Enter phonenumber"/>
+<label class="control-label">PHONE NUMBER</label><?php $display = displayErrors($error, 'phonenumber');
+echo $display ?> <input class="form-control input-md" name="phonenumber"  type="text"placeholder="Enter phonenumber"/>
 </div>
+
 <div class="form-group mb30">
-<label class="control-label">FACEBOOK LINK</label> <input class="form-control input-md" name="Adtitle"  type="text"placeholder="Enter your facebook link"/>
+<label class="control-label">FACEBOOK LINK</label><?php $display = displayErrors($error, 'fblink');
+echo $display ?> <input class="form-control input-md" name="fblink"  type="text"placeholder="Enter your facebook link"/>
 </div>
+
 <div class="form-group mb30">
-<label class="control-label">TWITTER LINK</label> <input class="form-control input-md" name="Adtitle"  type="text" placeholder="Enter your twitter link"/>
+<label class="control-label">TWITTER LINK</label><?php $display = displayErrors($error, 'twlink');
+echo $display ?> <input class="form-control input-md" name="twlink"  type="text" placeholder="Enter your twitter link"/>
 </div>
+
 <div class="form-group mb30">
-<label class="control-label">LOCATION</label> <input class="form-control input-md" name="Adtitle"  type="text" placeholder="Enter your location"/>
+
+<label class="control-label">LOCATION</label>
+<?php $display = displayErrors($error, 'location');
+echo $display ?> <input class="form-control input-md" name="location"  type="text" placeholder="Enter your location"/>
 </div>
+
 <div class="form-group mb30">
-<label class="control-label">INSTAGRAM LINK</label> <input class="form-control input-md" name="Adtitle"  type="text" placeholder="enter Your instagram link"/>
+<label class="control-label">INSTAGRAM LINK</label><?php $display = displayErrors($error, 'iglink');
+echo $display ?> <input class="form-control input-md" name="iglink"  type="text" placeholder="enter Your instagram link"/>
 </div>
+
 <div class="form-group mb30">
-<label class="control-label">LINKDIN LINK</label> <input class="form-control input-md" name="Adtitle"  type="text" placeholder="Enter your linkdin link">
+<label class="control-label">LINKEDIN LINK</label> <?php $display = displayErrors($error, 'lklink');
+echo $display ?><input class="form-control input-md" name="lklink"  type="text" placeholder="Enter your linkedin link">
 </div>
 
 <h2 class="title-2">UPLOAD IMAGE</h2>
-<div class="form-group">
-<label class="control-label">Featured Image</label> <input class="file" id="featured-img" type="file"><br>
-<input class="file" data-show-preview="featured-img" id="gallery-img-a" type="file"><br>
 
-<input class="file" data-show-preview="featured-img" id="gallery-img-b" type="file"><br>
+<div class="form-group">
+<label class="control-label">Add 3 photos of yourself</label><br>
+<?php $display = displayErrors($error, 'upload');
+echo $display ?>
+ <input class="file" id="featured-img" type="file" name="upload"><br>
+<?php $display = displayErrors($error, 'uploada');
+echo $display ?>
+<input class="file" data-show-preview="featured-img" id="gallery-img-a" type="file" name="uploada"><br>
+<?php $display = displayErrors($error, 'uploadb');
+echo $display ?>
+<input class="file" data-show-preview="featured-img" id="gallery-img-b" type="file" name="uploadb"><br>
 
 </div>
-<p class="help-block">Add 3 photos of yourself</p>
-<button class="btn btn-common" name="submit" type="button">Submit for review</button>
+
+<input class="btn btn-common" name="submit" type="submit" value="Submit">
 </form>
 </div>
 
 
 </div>
 </div>
+<?php }else{?>
+<div class="col-md-12">
+<div class="inner-box posting">
+<div class="alert alert-success alert-lg" role="alert">
+<h2 class="postin-title"><?php echo '✔ Hey! '.ucwords($firstname).', you can only upload your status once. Except granted such access again by the Master admin'; ?> </h2>
+<p><?php echo ' '.ucwords($firstname).', McKodev has not given you such access yet, Ask for it if you need to update your status. They don\'t bite.'; ?> </p>
+</div>
+</div>
+</div>';
+<?php } ?>
 </div>
 </div>
 </div>

@@ -133,8 +133,55 @@ $suc = 'Registration Successful';
    header("Location:/manageViews?success=$succ");
  }
 
+ function addBlog($dbconn,$post,$destination,$sess){
+   $stmt = $dbconn->prepare("INSERT INTO frontage VALUES(NULL, :ht,:txt,:img,NOW(),NOW(),:sess)");
+   $data = [
+     ':ht' => $post['header_title'],
+     ':txt' => $post['txt'],
+     ':img' => $destination,
+     ':sess' => $sess
+   ];
+   $stmt->execute($data);
+   $success = "Frontage Info Added";
+   $succ = preg_replace('/\s+/', '_', $success);
+
+   header("Location:/manageViews?success=$succ");
+ }
+
+ function addProfile($dbconn,$post,$destn,$sess){
+   $profile_status = 1;
+   $stmt = $dbconn->prepare("UPDATE admin SET firstname=:fn,lastname=:ln,portfolio=:pt,bio=:bi,phone_number=:pn,facebook_link=:fbl,twitter_link=:tlk,linkedin_link=:llk,instagram_link=:iglk,location=:lct,image_1=:img1,image_2=:img2,image_3=:img3,profile_status=:ps WHERE hash_id=:sess");
+
+     $stmt->bindParam(":fn",$post['fname']);
+     $stmt->bindParam(":ln",$post['lname']);
+     $stmt->bindParam(":pt",$post['portfolio']);
+     $stmt->bindParam(":bi",$post['bio']);
+     $stmt->bindParam(":pn",$post['phonenumber']);
+     $stmt->bindParam(":fbl",$post['fblink']);
+     $stmt->bindParam(":tlk",$post['twlink']);
+     $stmt->bindParam(":llk",$post['lklink']);
+     $stmt->bindParam(":iglk",$post['iglink']);
+     $stmt->bindParam(":lct",$post['location']);
+     $stmt->bindParam(":img1",$destn['a']);
+     $stmt->bindParam(":img2",$destn['b']);
+     $stmt->bindParam(":img3",$destn['c']);
+     $stmt->bindParam(":ps",$profile_status);
+     $stmt->bindParam(":sess",$sess);
+
+   $stmt->execute();
+
+
+
+
+   $success = "Profile Successfully Uploaded";
+   $succ = preg_replace('/\s+/', '_', $success);
+
+   header("Location:/addProfile?success=$succ");
+ }
+
+
  function adminInfo($dbconn,$sess){
-   $stmt = $dbconn->prepare("SELECT hash_id,firstname,lastname FROM admin WHERE hash_id = :sid");
+   $stmt = $dbconn->prepare("SELECT hash_id,firstname,lastname,profile_status FROM admin WHERE hash_id = :sid");
    $data = [
      ':sid' => $sess
    ];
