@@ -97,9 +97,10 @@ echo $display ?>
 </div>
 
   <br/>
-<div class="form-group mb30">
+  <div class="col-md-4 col-sm-4 col-xs-12 search-bar search-bar-nostyle">
+<div class="input-group-addon search-category-container">
 
-<label class="styled-select default-select">VISIBILITY </label>  <?php $display = displayErrors($error, 'visibility');
+<label class="control-labell">VISIBILITY </label>  <?php $display = displayErrors($error, 'visibility');
   echo $display ?><br><select class="dropdown-product selectpicker" name="visibility">
 <option value="">
 --Select--
@@ -114,7 +115,10 @@ Hide
 Preview
 </option>
 </select>
+
 </div>
+</div>
+<br/>
 <br/>
 <br/>
 

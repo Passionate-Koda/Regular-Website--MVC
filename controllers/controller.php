@@ -173,6 +173,67 @@ $suc = 'Registration Successful';
 
    header("Location:/addProject?success=$succ");
  }
+ function addFaq($dbconn,$post, $sess){
+
+
+   $stmt = $dbconn->prepare("INSERT INTO faq VALUES(NULL, :qs,:ans,NOW(),NOW(),:sess)");
+   $data = [
+     ':qs' => $post['question'],
+     ':ans' => $post['answer'],
+     ':sess' => $sess,
+   ];
+   $stmt->execute($data);
+   $success = "Project Uploaded";
+   $succ = preg_replace('/\s+/', '_', $success);
+
+   header("Location:/addFaq?success=$succ");
+ }
+
+ function addPackageName($dbconn,$post, $sess){
+
+   $stmt = $dbconn->prepare("INSERT INTO package_name VALUES(NULL,:pn,NOW(),NOW(),:sess)");
+   $data = [
+     ':pn' => $post['package_name'],
+     ':sess' => $sess,
+   ];
+   $stmt->execute($data);
+   $package_name = $post['package_name'];
+   $success = "Package Name $package_name Added";
+   $succ = preg_replace('/\s+/', '_', $success);
+
+   header("Location:/addPackage?success=$succ");
+ }
+
+ function addPackageList($dbconn,$post, $sess){
+
+   $stmt = $dbconn->prepare("INSERT INTO package_list VALUES(NULL,:pn,NOW(),NOW(),:sess)");
+   $data = [
+     ':pn' => $post['package_list'],
+     ':sess' => $sess,
+   ];
+   $stmt->execute($data);
+   $package_name = $post['package_list'];
+   $success = "Package Name $package_name Added";
+   $succ = preg_replace('/\s+/', '_', $success);
+
+   header("Location:/addPackage?success=$succ");
+ }
+
+ function addPackage($dbconn,$post, $sess){
+
+   $stmt = $dbconn->prepare("INSERT INTO package VALUES(NULL,:pn,:pl,NOW(),NOW(),:sess)");
+   $data = [
+     ':pl' => $post['package_l'],
+     ':pn' => $post['package_n'],
+     ':sess' => $sess,
+   ];
+   $stmt->execute($data);
+   $package_name = $post['package_n'];
+   $success = "Package $package_n Updated";
+   $succ = preg_replace('/\s+/', '_', $success);
+
+   header("Location:/addPackage?success=$succ");
+ }
 
  function addProfile($dbconn,$post,$destn,$sess){
    $profile_status = 1;
@@ -214,6 +275,31 @@ $suc = 'Registration Successful';
    $stmt->execute($data);
    $row = $stmt->fetch(PDO::FETCH_BOTH);
    return $row;
+ }
+
+ function getPackageName($dbconn){
+   $stmt = $dbconn->prepare("SELECT package_name FROM package_name");
+
+   $stmt->execute();
+   while($row = $stmt->fetch(PDO::FETCH_BOTH)){
+     extract($row);
+     echo '<option value="'.$package_name.'">
+     '.$package_name.'
+     </option>';
+   }
+
+ }
+ function getPackageList($dbconn){
+   $stmt = $dbconn->prepare("SELECT package_list FROM package_list");
+
+   $stmt->execute();
+   while($row = $stmt->fetch(PDO::FETCH_BOTH)){
+     extract($row);
+     echo '<option value="'.$package_list.'">
+     '.$package_list.'
+     </option>';
+   }
+
  }
 
 

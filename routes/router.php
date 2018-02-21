@@ -70,7 +70,15 @@ include APP_PATH."/views/admin/admin_home.php";
   include APP_PATH."/views/admin/add_faq.php";
   break;
 
+  case "addFaq?success=$success":
+  include APP_PATH."/views/admin/add_faq.php";
+  break;
+
   case "addPackage":
+  include APP_PATH."/views/admin/add_package.php";
+  break;
+
+  case "addPackage?success=$success":
   include APP_PATH."/views/admin/add_package.php";
   break;
 

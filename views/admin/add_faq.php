@@ -1,34 +1,73 @@
-
-
 <?php
+ob_start();
+session_start();
 include("include/link_include.php");
+include("include/authentication.php");
+authenticate();
+if(isset($_SESSION['id'])){
+  $session = $_SESSION['id'];
+}
+$info = adminInfo($conn,$session);
+extract($info);
+$fname = ucwords($firstname);
+$lname = ucwords($lastname);
+
+$error= [];
+
+if(array_key_exists('submit', $_POST)){
+
+  if(empty($_POST['question'])){
+    $error['question']="Enter a Question";
+  }
+
+  if(empty($_POST['answer'])){
+    $error['answer']="Enter a Answer";
+  }
+  if(empty($error)){
+    $clean = array_map('trim', $_POST);
+    addFaq($conn, $clean,$hash_id);
+  }
+}
  ?>
 <section id="content">
 <div class="container">
 <div class="row">
+  <?php if (isset($_GET['success'])){
+  $msg = str_replace('_', ' ', $_GET['success']);
+
+    echo '<div class="col-md-12">
+  <div class="inner-box posting">
+  <div class="alert alert-success alert-lg" role="alert">
+  <h2 class="postin-title">✔ Successful! '.$msg.' </h2>
+  <p>Thank you '.ucwords($firstname).', McKodev is happy to have you around. </p>
+  </div>
+  </div>
+  </div>';
+  } ?>
 <div class="col-sm-12 col-md-10 col-md-offset-1">
 <div class="page-ads box">
 <h2 class="title-2">Welcome to the FAQ Page</h2>
 <div class="row search-bar mb30 blue">
 <div class="advanced-search">
-<form class="search-form" method="get">
+
 <div class="col-md-4 col-sm-12 search-col">
 <h3>Please add and answer FAQ </h3>
 </div>
-</form>
+
 </div>
 </div>
-<form class="form-ad">
+<form class="form-ad" action="" method="post">
 <div class="form-group mb30">
-<label class="control-label">FAQ Questions</label> <input class="form-control input-md" name="Adtitle" placeholder="Enter a FAQ" required type="text">
+<label class="control-label">FAQ Questions</label><?php $display = displayErrors($error, 'question');
+echo $display ?> <input class="form-control input-md" name="question" placeholder="Enter a FAQ"  type="text">
 </div>
 
 <div class="form-group mb30">
-<label class="control-label" for="textarea">FAQ Answer</label>
-<textarea class="form-control" id="textarea" name="textarea" placeholder="Answer a FAQ" rows="4"></textarea>
+<label class="control-label" for="textarea">FAQ Answer</label><?php $display = displayErrors($error, 'answer');
+echo $display ?>
+<textarea class="form-control" id="textarea" name="answer" placeholder="Answer a FAQ" rows="4"></textarea>
 
-
-<button class="btn btn-common" type="button">Submit</button>
+<input class="btn btn-common" type="submit" name="submit" value="Submit">
 </form>
 
 </div>

@@ -1,81 +1,140 @@
 
 
 <?php
+ob_start();
+session_start();
 include("include/link_include.php");
+include("include/authentication.php");
+authenticate();
+if(isset($_SESSION['id'])){
+  $session = $_SESSION['id'];
+}
+$info = adminInfo($conn,$session);
+extract($info);
+$fname = ucwords($firstname);
+$lname = ucwords($lastname);
+
+
+$error= [];
+
+if(array_key_exists('submit', $_POST)){
+  if(empty($_POST['package_name'])){
+    $error['package_name']="Enter a Package Name";
+  }
+
+  if(empty($error)){
+    $clean = array_map('trim', $_POST);
+    addPackageName($conn,$clean,$hash_id);
+  }
+}
+
+if(array_key_exists('add', $_POST)){
+  if(empty($_POST['package_list'])){
+    $error['package_list']="Enter a Package List";
+  }
+
+  if(empty($error)){
+    $clean = array_map('trim', $_POST);
+    addPackageList($conn,$clean,$hash_id);
+  }
+}
+
+if(array_key_exists('commit', $_POST)){
+  if(empty($_POST['package_n'])){
+    $error['package_n']="Enter a Package Name";
+  }
+  if(empty($_POST['package_l'])){
+    $error['package_l']="Enter a Package List";
+  }
+
+  if(empty($error)){
+    $clean = array_map('trim', $_POST);
+    addPackage($conn,$clean,$hash_id);
+  }
+}
+
  ?>
 <section id="content">
 <div class="container">
 <div class="row">
+  <?php if (isset($_GET['success'])){
+  $msg = str_replace('_', ' ', $_GET['success']);
+
+    echo '<div class="col-md-12">
+  <div class="inner-box posting">
+  <div class="alert alert-success alert-lg" role="alert">
+  <h2 class="postin-title">✔ Successful! '.$msg.' </h2>
+  <p>Thank you '.ucwords($firstname).', McKodev is happy to have you around. </p>
+  </div>
+  </div>
+  </div>';
+  } ?>
 <div class="col-sm-12 col-md-10 col-md-offset-1">
 <div class="page-ads box">
 <h2 class="title-2">Welcome to the Add packages page</h2>
 <div class="row search-bar mb30 red-bg">
 <div class="advanced-search">
-<form class="search-form" method="get">
+
 <div class="col-md-4 col-sm-12 search-col">
 <h3>Please add packages.</h3>
 </div>
+</div>
+</div>
+<form class="form-ad" method="post" action="">
+<div class="form-group mb30">
+<label class="control-label">Package Name</label> <?php $display = displayErrors($error, 'package_name');
+echo $display ?><input class="form-control input-md" name="package_name" placeholder=" Write Your Pakage Name" type="text">
+<input class="btn btn-common" type="submit" name="submit" value="ADD">
 </form>
 </div>
-</div>
-<form class="form-ad">
+<form class="form-ad" method="post" action="">
 <div class="form-group mb30">
-<label class="control-label">Package Name</label> <input class="form-control input-md" name="Adtitle" placeholder=" Write Your Pakage Name" required type="text">
-<button class="btn btn-common" type="button">add</button>
-</div>
-<div class="form-group mb30">
-<label class="control-label">Package List</label> <input class="form-control input-md" name="Adtitle" placeholder="Add package list" required type="text">
-<button class="btn btn-common" type="button">ADD</button>
+<label class="control-label">Package List</label> <?php $display = displayErrors($error, 'package_list');
+echo $display ?><input class="form-control input-md" name="package_list" placeholder="Add package list" type="text">
+<input class="btn btn-common" type="submit" name="add" value="ADD">
 <br/>
 <br/>
+</form>
+</div>
+<form class="form-ad" method="post" action="">
+<div class="form-group mb30">
 <h3>Add Package Information</h3>
 <br/>
 <div class="col-md-4 col-sm-4 col-xs-12 search-bar search-bar-nostyle">
 
 <div class="input-group-addon search-category-container">
 
-<label class="styled-select default-select"> <select class="dropdown-product selectpicker" name="product-cat">
-<option value="New York">
-ADD PACKAGE
+<label class="control-label"> <select class="dropdown-product selectpicker" required name="package_n">
+<option value="">
+--SELECT PACKAGE--
 </option>
-<option value="California">
-Show
-</option>
-<option value="California">
-Hide
-</option>
-<option value="California">
-Preview
-</option>
+<?php getPackageName($conn); ?>
 </select>
 <br/>
 <br/>
+
 <br/>
-<label class="styled-select default-select"> <select class="dropdown-product selectpicker" name="product-cat">
-<option value="New York">
-ADD PACKAGE LIST
+<label class="control-label"> <select class="dropdown-product selectpicker" required name="package_l">
+<option value="">
+--SELECT PACKAGE LIST--
 </option>
-<option value="California">
-Show
-</option>
-<option value="California">
-Hide
-</option>
-<option value="California">
-Preview
-</option>
+<?php getPackageList($conn); ?>
 </select></label>
 
 </div>
 </div>
 <br/>
 <br/>
+<br>
+<br>
+<br>
+<br>
+<input class="btn btn-common" type="submit" name="commit" value="ADD">
+
 </form>
 </div>
-<button class="btn btn-common" type="button">submit</button>
-
-
-
+<br>
+<br>
 </div>
 </div>
 </div>
