@@ -133,6 +133,15 @@ $suc = 'Registration Successful';
    header("Location:/manageViews?success=$succ");
  }
 
+
+
+
+
+
+
+
+
+
  function addBlog($dbconn,$post,$destn, $sess){
    $rnd = rand(0000000000,9999999999);
    $split = explode(" ",$post['title']);
