@@ -200,9 +200,15 @@ $suc = 'Registration Successful';
 
  function addPackageName($dbconn,$post, $sess){
 
-   $stmt = $dbconn->prepare("INSERT INTO package_name VALUES(NULL,:pn,NOW(),NOW(),:sess)");
+   $rnd = rand(0000000000,9999999999);
+   $split = $_POST['package_name'];
+   $id = $rnd.$split;
+   $hash_id = str_shuffle($id);
+
+   $stmt = $dbconn->prepare("INSERT INTO package_name VALUES(NULL,:pn,:hid,NOW(),NOW(),:sess)");
    $data = [
      ':pn' => $post['package_name'],
+     ':hid' => $hash_id,
      ':sess' => $sess,
    ];
    $stmt->execute($data);
@@ -243,6 +249,16 @@ $suc = 'Registration Successful';
 
    header("Location:/addPackage?success=$succ");
  }
+
+
+
+
+
+
+
+
+
+
 
  function addProfile($dbconn,$post,$destn,$sess){
    $profile_status = 1;
@@ -285,6 +301,18 @@ $suc = 'Registration Successful';
    $row = $stmt->fetch(PDO::FETCH_BOTH);
    return $row;
  }
+
+ function adminLevel($dbconn,$sess){
+   $stmt = $dbconn->prepare("SELECT level FROM admin WHERE hash_id = :sid");
+   $data = [
+     ':sid' => $sess
+   ];
+   $stmt->execute($data);
+   $row = $stmt->fetch(PDO::FETCH_BOTH);
+  extract($row);
+   return $level;
+ }
+
 
  function getPackageName($dbconn){
    $stmt = $dbconn->prepare("SELECT package_name FROM package_name");

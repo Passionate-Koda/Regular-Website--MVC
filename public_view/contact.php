@@ -1,5 +1,7 @@
 <?php
-
+ob_start();
+$page_name = "Contact";
+include 'include/header.php';
 if(array_key_exists('submit', $_POST)){
 		$message = $_POST['message'];
 		$email = $_POST['email'];
@@ -24,17 +26,17 @@ if(array_key_exists('submit', $_POST)){
 		$mail = $smtp->send($to, $headers, $body); // sending the email
 
 		if (PEAR::isError($mail)){
-		echo("<p>" . $mail->getMessage() . "</p>");
+  $msg['failed'] = $mail->getMessage() ;
 		}
 		else {
-		echo("<p>Message successfully sent!</p>");
+    $msg['done'] = "Quote Requested";
 		// header("Location: http://www.example.com/"); // you can redirect page on successful submission.
 		}
 
 }
 
 
-include 'include/header.php';
+
 
 
 
@@ -63,6 +65,26 @@ include 'include/header.php';
 <section id="content">
 <div class="container">
 <div class="row">
+	<?php if (isset($msg['done'])){
+    echo '<div class="col-md-12">
+  <div class="inner-box posting">
+  <div class="alert alert-success alert-lg" role="alert">
+  <h2 class="postin-title">✔ Successful! '.$msg['done'].' </h2>
+  <p>Thank you, McKodev will get back to you. </p>
+  </div>
+  </div>
+  </div>';
+  } ?>
+  <?php if (isset($msg['failed'])){
+    echo '<div class="col-md-12">
+  <div class="inner-box posting">
+  <div class="alert alert-danger alert-lg" role="alert">
+  <h2 class="postin-title">ops! '.$msg['failed'].' </h2>
+  <p>Please Try Again, Thanks for your patience </p>
+  </div>
+  </div>
+  </div>';
+  } ?>
 <div class="col-md-8">
 <h2 class="title-2">
 We love to hear from you

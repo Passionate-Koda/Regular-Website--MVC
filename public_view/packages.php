@@ -1,4 +1,6 @@
 <?php
+ob_start();
+$page_name = "|Packages";
 include("include/header.php");
 
  ?>

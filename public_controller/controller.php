@@ -38,8 +38,7 @@ function addComment($dbconn, $get,$post){
   $stmt->bindParam(":cm", $post['comment']);
   $stmt->bindParam(":hid", $hash_id);
   $stmt->execute();
-  $msg = [];
-  $msg['done'] = "Comment Posted";
+
 }
 
 function getComment($dbconn, $get){
@@ -143,6 +142,14 @@ function getPackages($dbconn){
 
 }
 
+function getPackageNameByHash($dbconn,$get){
+  $stmt = $dbconn->prepare("SELECT * FROM package_name WHERE hash_id = :hid");
+  $stmt->bindParam(":hid", $get);
+  $stmt->execute();
+  $row = $stmt->fetch(PDO::FETCH_BOTH);
+    return $row;
+}
+
   function getRecentPost($dbconn, $number){
     $stmt = $dbconn->prepare("SELECT * FROM blog ORDER BY id DESC LIMIT $number ");
 
@@ -226,7 +233,29 @@ function getPackages($dbconn){
     $row = $stmt->fetch(PDO::FETCH_BOTH);
     return $row;
    }
-
+  function getProjectList($dbconn){
+    $stmt = $dbconn->prepare("SELECT * FROM project");
+    $stmt->execute();
+  while($row = $stmt->fetch(PDO::FETCH_BOTH)){
+    extract($row);
+  echo '<tr>
+  <td class="add-img-td">
+  <a href="ads-details.html">
+  <img class="img-responsive" src="'.$image.'" alt="img">
+  </a>
+  </td>
+  <td class="ads-details-td">
+  <h4><a target="_blank" href="'.$project_link.'">'.$project_name.'</a></h4>
+  <p> <strong>'.$about.'</strong></p>
+  </td>
+  <td class="price-td">
+    <a target="_blank" href="'.$project_link.'">
+     <button class="btn btn-common" type="submit">View Project</button>
+    </a>
+  </td>
+  </tr>';
+   }
+}
 
 
 

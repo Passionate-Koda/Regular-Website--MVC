@@ -9,9 +9,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <meta name="author" content="GrayGrids Team">
-<title>Mckodev</title>
+<title>McKodev <?php echo $page_name ?> - Quality and Professional Websites Development</title>
 
-<link rel="shortcut icon" href="assets/img/favicon.png">
+<link rel="shortcut icon" href="assets/img/logo1.jpg">
 
 <link rel="stylesheet" href="assets/css/bootstrap.min.css" type="text/css">
 <link rel="stylesheet" href="assets/css/jasny-bootstrap.min.css" type="text/css">
@@ -54,10 +54,10 @@
 <div class="collapse navbar-collapse" id="navbar">
 <ul class="nav navbar-nav navbar-right">
   <li class="postadd">
-  <a class="btn btn-danger btn-post" href="admin/admin_login.php"><span class="fa fa-plus-circle"></span> Admin</a>
+  <a class="btn btn-danger btn-post" href="https://admin.mckodev.com.ng"><span class="fa fa-cogs"></span> Admin</a>
   </li>
 <li class="postadd">
-<a class="btn btn-danger btn-post" href="packages.php"><span class="fa fa-plus-circle"></span> View Packages</a>
+<a class="btn btn-common " href="packages"><span class="fa fa-cubes"></span> Packages</a>
 </li>
 </ul>
 </div>
@@ -77,9 +77,9 @@
 <li><a href="packages">Packages</a></li>
 <li><a href="projects">Projects</a></li>
 <li><a href="blog">Blog</a></li>
-<li><a href="blog?hsh=hsh">Blog Articles</a></li>
-<li><a href="profile?hsh=hsh">Profile</a></li>
-<li><a href="quote">Request Quote </a></li>
+<!-- <li><a href="blog?hsh=hsh">Blog Articles</a></li>
+<li><a href="profile?hsh=hsh">Profile</a></li> -->
+<!-- <li><a href="quote">Request Quote </a></li> -->
 <li><a href="contact">Contact</a></li>
 </ul>
 </div>

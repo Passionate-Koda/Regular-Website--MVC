@@ -2,8 +2,10 @@
 ob_start();
 session_start();
 include("include/link_include.php");
+
 include("include/authentication.php");
 authenticate();
+include("include/levelcheck.php");
 if(isset($_SESSION['id'])){
   $session = $_SESSION['id'];
 }

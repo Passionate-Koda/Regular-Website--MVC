@@ -3,7 +3,7 @@ $uri = explode("/", $_SERVER['REQUEST_URI']);
 //var_dump($uri);
 
 if(count($uri)> 2){
-  header("Location:/home");
+  // header("Location:/home");
 }
 
 //Creating A Null variable to be populated for the query String Route;
@@ -47,23 +47,28 @@ if(isset($_GET['hsh'])){
   $hsh = $_GET['hsh'];
 }
 
+$package = NULL;
+if(isset($_GET['package'])){
+  $package = $_GET['package'];
+}
+
 
 
 
 switch ($uri[1]) {
 
 
-  case "":
-include APP_PATH."/public_view/index.php";
-  break;
+//   case "":
+// include APP_PATH."/public_view/index.php";
+//   break;
 
   case "home":
 include APP_PATH."/public_view/index.php";
   break;
 
-  case "/":
-include APP_PATH."/public_view/index.php";
-  break;
+//   case "/":
+// include APP_PATH."/public_view/index.php";
+//   break;
   case "list":
 include APP_PATH."/public_view/list.php";
   break;
@@ -77,6 +82,10 @@ include APP_PATH."/public_view/profile.php";
   break;
 
   case "quote":
+include APP_PATH."/public_view/request_quote.php";
+  break;
+
+  case "quote?package=$package":
 include APP_PATH."/public_view/request_quote.php";
   break;
 

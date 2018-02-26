@@ -1,7 +1,6 @@
-
-
 <?php
-
+ob_start();
+$page_name = "|Profile";
 include 'include/header.php';
 
  ?>

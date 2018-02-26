@@ -1,5 +1,6 @@
 <?php
-
+ob_start();
+$page_name = "|Blog";
 include 'include/header.php';
 
  ?>

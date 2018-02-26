@@ -19,12 +19,12 @@ include("include/header.php");
 </div>
 <div class="col-sm-9 page-content">
 <div class="inner-box">
-<h2 class="title-2"><i class="fa fa-star-o"></i> Saved Search</h2>
+<h2 class="title-2"><i class="fa fa-star-o"></i>McKodev Projects</h2>
 <br>
 <div class="table-responsive">
 <table class="table table-striped table-bordered add-manage-table">
 <tbody>
-<tr>
+<!-- <tr>
 <td class="add-img-td">
 <a href="ads-details.html">
 <img class="img-responsive" src="assets/img/item/img-1.jpg" alt="img">
@@ -112,7 +112,8 @@ include("include/header.php");
    <button class="btn btn-common" type="submit">View Project</button>
   </a>
 </td>
-</tr>
+</tr> -->
+<?php getProjectList($conn) ?>
 </tbody>
 </table>
 </div>

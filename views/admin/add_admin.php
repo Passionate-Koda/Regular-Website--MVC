@@ -35,7 +35,7 @@ if(array_key_exists('submit', $_POST)){
 
   if(empty($error)){
     $clean = array_map('trim', $_POST);
-    adminLogin($conn, $clean);
+    doAdminRegister($conn, $clean);
   }
 }
 

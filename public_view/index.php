@@ -1,4 +1,7 @@
 <?php
+ob_start();
+$page_name = "";
+include 'include/header.php';
 if(array_key_exists('submit', $_POST)){
 		$email = $_POST['email'];
 		$message = "You have subscribed to McKodev Newsletter. We will always notify you of latest information from Mckodev. We will send you necessary informations alone.";
@@ -31,7 +34,7 @@ if(array_key_exists('submit', $_POST)){
 
 }
 
-include 'include/header.php'
+
 
  ?>
 <section id="slider">

@@ -1,5 +1,6 @@
 <?php
-
+ob_start();
+$page_name = "|Blog";
 include("include/header.php");
 $info = getArticle($conn,$_GET['hsh']);
 
@@ -10,11 +11,8 @@ extract($info);
 if(array_key_exists('submit', $_POST)){
 
 addComment($conn, $_GET['hsh'], $_POST);
-
-
-
-
-
+$msg = [];
+$msg['done'] = "Comment Posted";
 }
 
 
@@ -24,6 +22,16 @@ addComment($conn, $_GET['hsh'], $_POST);
  <div id="content">
  <div class="container">
  <div class="row">
+   <?php if (isset($msg['done'])){
+     echo '<div class="col-md-12">
+   <div class="inner-box posting">
+   <div class="alert alert-success alert-lg" role="alert">
+   <h2 class="postin-title">✔ Successful! '.$msg['done'].' </h2>
+   <p>Thank you, McKodev is happy to have you around. </p>
+   </div>
+   </div>
+   </div>';
+   } ?>
  <div class="col-md-8">
 
  <div class="blog-post single-post">
@@ -40,7 +48,7 @@ addComment($conn, $_GET['hsh'], $_POST);
  <div class="meta">
  <span class="meta-part"><a href="#"><i class="fa fa-user"></i> <?php echo $author ?></a></span>
  <span class="meta-part"><a href="#"><i class="fa fa-clock-o"></i> <?php echo $date_created ?></a></span>
- <span class="meta-part"><a href="#"><i class="fa fa-comment"></i> Comments 0</a></span>
+ <span class="meta-part"><a href="#"><i class="fa fa-comment"></i> Comments <?php $cnt = getCommentCount($conn, $_GET['hsh']); echo $cnt; ?></a></span>
  </div>
  <p><?php getArticleColumn($conn,$_GET['hsh'],0) ?></p>
  <br>

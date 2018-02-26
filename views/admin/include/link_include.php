@@ -9,7 +9,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <meta name="author" content="GrayGrids Team">
-<title>Mckodev</title>
+<title>McKodev Admin - Quality and Professional Websites Development</title>
+
 <link rel="shortcut icon" href="assets/img/favicon.png">
 <link rel="stylesheet" href="assets/css/bootstrap.min.css" type="text/css">
 <link rel="stylesheet" href="assets/css/jasny-bootstrap.min.css" type="text/css">
@@ -40,12 +41,12 @@
 <span class="icon-bar"></span>
 </button>
 
-<a class="navbar-brand logo" href="#"><img src="assets/img/logo.png" alt=""></a>
+<a class="navbar-brand logo" href="#"><img src="assets/img/logo1.jpg" alt=""></a>
 </div>
 <div class="collapse navbar-collapse" id="navbar">
 <ul class="nav navbar-nav navbar-right">
 <li class="postadd">
-<a class="btn btn-danger btn-post" href="post-ads.html"><span class="fa fa-plus-circle"></span> Go to Public</a>
+<a class="btn btn-danger btn-post" href="https://mckodev.com.ng"><span class="fa fa-plus-circle"></span> Go to Public</a>
 </li>
 </ul>
 </div>

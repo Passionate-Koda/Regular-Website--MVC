@@ -31,8 +31,8 @@ if(array_key_exists('submit', $_POST)){
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
-<meta name="author" content="GrayGrids Team">
-<title>Login | Bootstrap HTML5 Classified Template</title>
+<meta name="author" content="McKodev">
+<title>McKodev Admin - Quality and Professional Websites Development</title>
 
 <link rel="shortcut icon" href="assets/img/favicon.png">
 

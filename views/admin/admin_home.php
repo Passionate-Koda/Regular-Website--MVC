@@ -1,5 +1,13 @@
 
-<?php include("include/link_include.php"); ?>
+<?php
+ob_start();
+session_start();
+include("include/link_include.php");
+
+include("include/authentication.php");
+authenticate();
+
+ ?>
 
     <div id="carousel-area">
 

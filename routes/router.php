@@ -48,18 +48,21 @@ if(isset($_GET['sgn'])){
 switch ($uri[1]) {
 
 
-  case "":
-include APP_PATH."/views/admin/admin_home.php";
-  break;
-
-  case "/":
-include APP_PATH."/views/admin/admin_home.php";
-  break;
+//   case "":
+// include APP_PATH."/views/admin/admin_home.php";
+//   break;
+//
+//   case "/":
+// include APP_PATH."/views/admin/admin_home.php";
+//   break;
 
 
 
   case "addBlog":
   include APP_PATH."/views/admin/add_blog.php";
+  break;
+  case "logout":
+  include APP_PATH."/views/admin/logout.php";
   break;
 
   case "addBlog?success=$success":
