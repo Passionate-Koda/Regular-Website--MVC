@@ -2,4 +2,4 @@
 .git
 vagrantfile
 www/phpmyadmin
-www/assets/
+www/assets
