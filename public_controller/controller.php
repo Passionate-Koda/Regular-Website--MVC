@@ -215,7 +215,9 @@ function getPackageNameByHash($dbconn,$get){
     return $string;
   }
 
-  function getArticleColumn($dbconn,$hid,$index){
+
+
+  function getArticleColumn($dbconn,$hid){
     $stmt = $dbconn->prepare("SELECT * FROM blog WHERE hash_id = :hid");
     $stmt->bindParam(":hid", $hid);
     $stmt->execute();
@@ -223,9 +225,11 @@ function getPackageNameByHash($dbconn,$get){
     extract($row);
     $column = explode("<br>", $body);
 
-    $col = $column[$index];
-    echo "$col";
+    return $column;
    }
+
+
+
   function getArticle($dbconn,$hid){
     $stmt = $dbconn->prepare("SELECT * FROM blog WHERE hash_id = :hid");
     $stmt->bindParam(":hid", $hid);

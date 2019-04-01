@@ -1,11 +1,12 @@
 <?php
 ob_start();
-$page_name = "|Blog";
-include("include/header.php");
 $info = getArticle($conn,$_GET['hsh']);
 
 
 extract($info);
+$page_name = "- $title";
+include("include/header.php");
+
 
 
 if(array_key_exists('submit', $_POST)){
@@ -14,8 +15,8 @@ addComment($conn, $_GET['hsh'], $_POST);
 $msg = [];
 $msg['done'] = "Comment Posted";
 }
-
-
+$column = [];
+$column = getArticleColumn($conn, $_GET['hsh']);
  ?>
 
 
@@ -50,9 +51,9 @@ $msg['done'] = "Comment Posted";
  <span class="meta-part"><a href="#"><i class="fa fa-clock-o"></i> <?php echo $date_created ?></a></span>
  <span class="meta-part"><a href="#"><i class="fa fa-comment"></i> Comments <?php $cnt = getCommentCount($conn, $_GET['hsh']); echo $cnt; ?></a></span>
  </div>
- <p><?php getArticleColumn($conn,$_GET['hsh'],0) ?></p>
+ <p><?php echo $column['0'] ?></p>
  <br>
- <p><?php getArticleColumn($conn,$_GET['hsh'],1) ?></p>
+ <p><?php  echo $column['1'] ?></p>
  <br>
  <!-- <blockquote>
  <span class="quote-text">
@@ -62,14 +63,28 @@ $msg['done'] = "Comment Posted";
  </blockquote> -->
  <div class="row">
  <div class="col-sm-6">
- <p><?php getArticleColumn($conn,$_GET['hsh'],2) ?></p>
+ <p><?php echo $column['2'] ?></p>
  </div>
  <div class="col-sm-6">
  <img src="<?php echo $image_2 ?>" alt="">
  </div>
  </div>
- <br>
- <p><?php getArticleColumn($conn,$_GET['hsh'],3) ?></p>
+
+
+<?php
+
+if(count($column)>3){
+  $pcount = count($column);
+ for($i=3;$i<$pcount;$i++){
+
+echo '<br><p>'.$column[$i].'</p>';
+
+}
+
+}
+ ?>
+
+
  </div>
 
  </div>
